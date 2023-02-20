@@ -6,22 +6,19 @@ const MongoClient = mongodb.MongoClient
 const port= process.env.PORT || 8000
 import RestaurantsDAO from "./dao/restaurantsDAO.js"
 import ReviewsDAO from "./dao/reviewsDAO.js"
+let URL="mongodb+srv://ritikjainrj18:6232547429@cluster0.xrzcv7u.mongodb.net/sample_restaurants?retryWrites=true&w=majority"
 MongoClient.connect(
-    process.env.RESTREVIEWS_DB_URI,
-    {
-        // poolSize: 50,
-        // wtimeoutMS:2500,
-        // useNewUrlParse: true  
-    }
+    URL
+    // process.env.RESTREVIEWS_DB_URI,
 )
-.catch(err=>{
-    console.error(err.stack)
-    process.exit(1)
-})
 .then(async client=>{
     await RestaurantsDAO.injectDB(client)
     await ReviewsDAO.injectDB(client)
     app.listen(port,()=>{
         console.log(`listening on port ${port}`)
     })
+})
+.catch(err=>{
+    console.error(err.stack)
+    process.exit(1)
 })
